@@ -1,0 +1,12 @@
+<hello name="{{ name }}"></hello>
+
+<ul class="ul-container">
+  <ul>
+    <div class="title">Fist block</div> 
+    <li *ngFor="let item1 of model.firstData">First block counter - {{item1}}</li>
+  </ul>
+   <ul>
+    <div class="title">Second block</div> 
+    <li *ngFor="let item of model.secondData">Second block counter - {{item}}</li>
+  </ul>
+</ul>
