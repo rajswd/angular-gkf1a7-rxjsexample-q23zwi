@@ -1,12 +1,19 @@
 <hello name="{{ name }}"></hello>
+<div class="rxjs-handler">
+  <label>
+    Enter interval duration in seconds:<br>
+    <input type="text" #intervalDur maxlength="1" /> 
+  </label>
+  <button (click) ="restartTimer(intervalDur.value)">Reset Inerval</button>
+</div>
+<div class="accordian-container" >
+  <div class="accordian" (click) = "model.subject.visibility = !model.subject.visibility">
+    <span class="title"> Subject </span>
+    <app-view [isVisible]="model.subject.visibility" [model] = "model.subject"></app-view>
+  </div>
 
-<ul class="ul-container">
-  <ul>
-    <div class="title">Fist block</div> 
-    <li *ngFor="let item1 of model.firstData">First block counter - {{item1}}</li>
-  </ul>
-   <ul>
-    <div class="title">Second block</div> 
-    <li *ngFor="let item of model.secondData">Second block counter - {{item}}</li>
-  </ul>
-</ul>
+  <div class="accordian" (click) = "model.combineLatest.visibility = !model.combineLatest.visibility">
+    <span class="title"> CombineLatest </span>
+    <app-view [isVisible]="model.combineLatest.visibility" [model] = "model.combineLatest"></app-view>
+  </div>
+</div>

@@ -1,0 +1,10 @@
+<ul *ngIf="isVisible" class="ul-container">
+    <ul>
+      <div class="title">Fist block</div> 
+      <li *ngFor="let item1 of model.firstData">counter - {{item1}}</li>
+    </ul>
+    <ul>
+      <div class="title">Second block</div> 
+      <li *ngFor="let item of model.secondData">counter - {{item}}</li>
+    </ul>
+</ul>

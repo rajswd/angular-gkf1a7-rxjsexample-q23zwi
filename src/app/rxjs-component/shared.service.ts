@@ -1,4 +1,4 @@
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 
 import { Subject } from "rxjs/Subject";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
@@ -6,7 +6,7 @@ import { BehaviorSubject } from "rxjs/BehaviorSubject";
 @Injectable({
   providedIn:"root"
 })
-export class SharedService {
+export class SharedService implements OnDestroy {
 
   model = {    
     interval_1: null,
@@ -22,23 +22,34 @@ export class SharedService {
         this.triggerSubscriber();
    }
 
-   triggerSubscriber(){    
+   triggerSubscriber(intervalDuration:number = 1000){    
       
-      let interval = this.model.interval_1 = setInterval(()=>{
+    this.model.interval_1 = this.model.interval_1 = setInterval(()=>{
         this.subj1$.next(++this.model.increment);
         if(this.model.increment == 5){
           this.model.increment = 0;
-          clearInterval(interval);
+          this.stopInterval(this.model.interval_1);
         }
-      },1000);
-    let interval2 = this.model.interval_2 = setInterval(()=>{
+      },intervalDuration);
+    this.model.interval_2 = this.model.interval_2 = setInterval(()=>{
       this.subj2$.next(this.model.counter);
       if(this.model.counter == 500){
         this.model.counter = 0;
-        clearInterval(interval2);
+        this.stopInterval(this.model.interval_2);
       }else{
         this.model.counter += 100;
       }
-    },10000);
+    },intervalDuration+2000);
+   }
+
+   stopInterval(id){
+     clearInterval(id); 
+   }
+   stopAllInterval(){
+     clearInterval(this.model.interval_1);
+     clearInterval(this.model.interval_2);
+   }
+   ngOnDestroy(){
+     this.stopAllInterval();
    }
 }
