@@ -1,5 +1,5 @@
 import { Injectable, OnDestroy } from '@angular/core';
-
+import { ReplaySubject } from "rxjs/ReplaySubject";
 import { Subject } from "rxjs/Subject";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
 
@@ -14,12 +14,22 @@ export class SharedService implements OnDestroy {
     increment:0,
     counter: 100,
   };
+ 
+  public subj1$ = new ReplaySubject<number>(3);
+  public subj2$ = new ReplaySubject<number>(2);
 
-  public subj1$ = new Subject<number>();
-  public subj2$ = new Subject<number>();
+  // public subj1$ = new BehaviorSubject<number>(30);
+  // public subj2$ = new BehaviorSubject<number>(20);
+
+  // public subj1$ = new Subject<number>();
+  // public subj2$ = new Subject<number>();
 
   constructor() {    
-        this.triggerSubscriber();
+         this.triggerSubscriber();
+   }
+
+   subjectSubscribe(){
+     return this.subj1$.asObservable();
    }
 
    triggerSubscriber(intervalDuration:number = 1000){    
@@ -27,25 +37,27 @@ export class SharedService implements OnDestroy {
     this.model.interval_1 = this.model.interval_1 = setInterval(()=>{
         this.subj1$.next(++this.model.increment);
         if(this.model.increment == 5){
-          this.model.increment = 0;
-          this.stopInterval(this.model.interval_1);
+          this.stopInterval(this.model.interval_1,"increment");
         }
       },intervalDuration);
     this.model.interval_2 = this.model.interval_2 = setInterval(()=>{
       this.subj2$.next(this.model.counter);
       if(this.model.counter == 500){
-        this.model.counter = 0;
-        this.stopInterval(this.model.interval_2);
+        
+        this.stopInterval(this.model.interval_2,"counter");
       }else{
         this.model.counter += 100;
       }
-    },intervalDuration+2000);
+    },intervalDuration+1500);
    }
 
-   stopInterval(id){
+   stopInterval(id,type:string){
      clearInterval(id); 
+     this.model[type] = 0;
    }
    stopAllInterval(){
+     this.model.increment = 0;
+     this.model.counter = 0;
      clearInterval(this.model.interval_1);
      clearInterval(this.model.interval_2);
    }
@@ -53,3 +65,14 @@ export class SharedService implements OnDestroy {
      this.stopAllInterval();
    }
 }
+
+
+// @Injectable()
+// export class MyService {
+//   makeRequest(value: string, delayDuration: number) {
+//     // simulate http request
+//     return of(`Complete: ${value}`).pipe(
+//       delay(delayDuration)
+//     );
+//   }
+// }

@@ -5,6 +5,7 @@
     <input type="text" #intervalDur maxlength="1" /> 
   </label>
   <button (click) ="restartTimer(intervalDur.value)">Reset Inerval</button>
+   <button (click) ="sharedService.stopAllInterval()">Stop Inerval</button>
 </div>
 <div class="accordian-container" >
   <div class="accordian" (click) = "model.subject.visibility = !model.subject.visibility">
@@ -13,7 +14,13 @@
   </div>
 
   <div class="accordian" (click) = "model.combineLatest.visibility = !model.combineLatest.visibility">
-    <span class="title"> CombineLatest </span>
+    <span class="title"> Combine-Latest </span>
     <app-view [isVisible]="model.combineLatest.visibility" [model] = "model.combineLatest"></app-view>
   </div>
+
+ <div class="accordian" (click) = "model.forkJoin.visibility = !model.forkJoin.visibility">
+    <span class="title"> Fork-Join </span>
+    <app-view [isVisible]="model.forkJoin.visibility" [model] = "model.forkJoin"></app-view>
+  </div>
+
 </div>
